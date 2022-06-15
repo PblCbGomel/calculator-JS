@@ -15,6 +15,8 @@ main {
   justify-content: center;
   width: 100%;
   height: 1000px;
+
+  background-color: rgb(216, 216, 216);
 }
 
 .calculator-wrapper {
@@ -22,17 +24,20 @@ main {
   width: 450px;
   height: 750px;
   border-radius: 15px;
+  border: 1px solid black;
 
   display: flex;
   flex-direction: column;
+
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
 .actions-wrapper {
   background-color: #3d3d3d;
 
   height: 200px;
-  width: calc(100%-10px);
-  padding: 0 10px 10px 0;
+  width: calc(100%-20px);
+  padding: 0 20px 10px 0;
   border-radius: 15px 15px 0 0;
 
   display: flex;
@@ -43,7 +48,6 @@ main {
 
 .actions-wrapper .input {
   background-color: #3d3d3d;
-  border: 0;
 
   color: #f3f3f3;
   font-size: 40px;
@@ -69,6 +73,8 @@ main {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+
+  user-select: none;
 }
 
 .btn {
@@ -76,10 +82,15 @@ main {
   height: 50px;
   border-radius: 10px;
   box-shadow: 0 4px 4px rgba(255, 255, 255, 0.25);
+  border: 1px solid black;
 
   text-align: center;
   line-height: 50px;
   font-size: 32px;
+}
+
+.btn:hover {
+  cursor: pointer;
 }
 
 .btn-clear-all {
@@ -90,10 +101,44 @@ main {
   background-color: #f1b312;
 }
 
+.btn-orange:hover {
+  background-color: #e9ad13;
+}
+
+.btn-orange:active {
+  background-color: #d8a111;
+}
+
 .btn-gray {
   background-color: #adadad;
 }
 
+.btn-gray:hover {
+  background-color: #9e9e9e;
+}
+
+.btn-gray:active {
+  background-color: #949494;
+}
+
 .btn-ligth-gray {
   background-color: #d9d9d9;
+}
+
+.btn-ligth-gray:hover {
+  background-color: #d1d1d1;
+}
+
+.btn-ligth-gray:active {
+  background-color: #bdbdbd;
+}
+
+.by-text {
+  width: 100%;
+
+  text-align: center;
+  font-size: 16px;
+  color: white;
+  letter-spacing: 1px;
+  font-family: sans-serif;
 }
