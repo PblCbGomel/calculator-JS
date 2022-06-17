@@ -18,6 +18,10 @@ const allDoubleActionBtn = document.querySelectorAll(".btn-double-action");
 const pointBtn = document.querySelector(".btn-point");
 const allClearBtn = document.querySelector(".btn-clear-all");
 const symbolClearBtn = document.querySelector(".btn-clear");
+const plusMinusBtn = document.querySelector(".btn-plus-minus");
+const sqrtBtn = document.querySelector(".btn-sqrt");
+const factorialBtn = document.querySelector(".btn-factorial");
+const lnBtn = document.querySelector(".btn-ln");
 
 function doAction(num1, num2, action) {
   if (num1 === "") {
@@ -35,6 +39,8 @@ function doAction(num1, num2, action) {
       return String(num1 * num2);
     case "/":
       return String(num1 / num2);
+    case "%":
+      return String(num1 % num2);
     default:
       return num1;
   }
@@ -67,19 +73,19 @@ for (let i = 1; i <= 10; ++i) {
 /*For double action*/
 allDoubleActionBtn.forEach((btn) => {
   btn.addEventListener("click", () => {
-    if (equalsPressed) {
-      equalsPressed = false;
-    }
-    action = btn.innerHTML;
-    if (isFirstNumber) {
-      if (num1 !== "") {
+    if (num1 !== "") {
+      if (equalsPressed) {
+        equalsPressed = false;
+      }
+      action = btn.innerHTML;
+      if (isFirstNumber) {
         actionBlock.innerHTML = num1 + action;
         isFirstNumber = false;
+      } else {
+        num1 = result;
+        num2 = "";
+        actionBlock.innerHTML = num1 + action;
       }
-    } else {
-      num1 = result;
-      num2 = "";
-      actionBlock.innerHTML = num1 + action;
     }
   });
 });
@@ -137,4 +143,81 @@ symbolClearBtn.addEventListener("click", () => {
   actionBlock.innerHTML = num1 + action + num2;
   result = doAction(num1, num2, action);
   resultBlock.innerHTML = "=" + result;
+});
+
+/* +/- */
+plusMinusBtn.addEventListener("click", () => {
+  equalsPressed = true;
+  isFirstNumber = true;
+  result = -result;
+  num1 = result;
+  num2 = "";
+  action = "";
+  actionBlock.innerHTML = "";
+  resultBlock.innerHTML = "=" + result;
+});
+
+/* sqrt */
+sqrtBtn.addEventListener("click", () => {
+  equalsPressed = true;
+  isFirstNumber = true;
+  if (result >= 0) {
+    result = Math.sqrt(result);
+    num1 = result;
+    num2 = "";
+    action = "";
+    actionBlock.innerHTML = "";
+    resultBlock.innerHTML = "=" + result;
+  } else {
+    num1 = "";
+    num2 = "";
+    action = "";
+    actionBlock.innerHTML = "";
+    resultBlock.innerHTML = "=Error";
+  }
+});
+
+/* factorial */
+
+factorialBtn.addEventListener("click", () => {
+  equalsPressed = true;
+  isFirstNumber = true;
+  if (result == Math.trunc(result) && result >= 0) {
+    let n = result;
+    result = 1;
+    for (let i = 1; i <= n; ++i) {
+      result *= i;
+    }
+    num1 = result;
+    num2 = "";
+    actionBlock.innerHTML = "";
+    resultBlock.innerHTML = "=" + result;
+  } else {
+    num1 = "";
+    num2 = "";
+    action = "";
+    actionBlock.innerHTML = "";
+    resultBlock.innerHTML = "=Error";
+  }
+});
+
+/* ln */
+
+lnBtn.addEventListener("click", () => {
+  equalsPressed = true;
+  isFirstNumber = true;
+  result = Math.log2(result);
+  if (result == Infinity || result == -Infinity) {
+    num1 = "";
+    num2 = "";
+    action = "";
+    actionBlock.innerHTML = "";
+    resultBlock.innerHTML = "=Error";
+  } else {
+    num1 = result;
+    num2 = "";
+    action = "";
+    actionBlock.innerHTML = "";
+    resultBlock.innerHTML = "=" + result;
+  }
 });
