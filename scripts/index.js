@@ -59,6 +59,9 @@ function doAction(num1, num2, action) {
     case "x":
       return String(num1 * num2);
     case "/":
+      if (Math.abs(num1 / num2) == Infinity) {
+        return "Error";
+      }
       return String(num1 / num2);
     case "%":
       return String(num1 % num2);
@@ -129,6 +132,8 @@ pointBtn.addEventListener("click", () => {
     }
     num2 += ".";
   }
+  result = cutResult(doAction(num1, num2, action));
+  resultBlock.innerHTML = "=" + result;
   changeInput(num1, num2, action);
 });
 
@@ -139,7 +144,10 @@ equalsBtn.addEventListener("click", () => {
   num1 = result;
   num2 = "";
   action = "";
-  changeInput(num1, num2, action);
+  changeInput("", num2, action);
+  if (result == "Error") {
+    num1 = "";
+  }
 });
 
 /* Clear */
@@ -173,82 +181,90 @@ symbolClearBtn.addEventListener("click", () => {
 
 /* +/- */
 plusMinusBtn.addEventListener("click", () => {
-  equalsPressed = true;
-  isFirstNumber = true;
-  result = -result;
-  num1 = result;
-  num2 = "";
-  action = "";
-  changeInput(num1, num2, action);
-  resultBlock.innerHTML = "=" + result;
+  if (result != "Error") {
+    equalsPressed = true;
+    isFirstNumber = true;
+    result = -result;
+    num1 = result;
+    num2 = "";
+    action = "";
+    changeInput(num1, num2, action);
+    resultBlock.innerHTML = "=" + result;
+  }
 });
 
 /* sqrt */
 sqrtBtn.addEventListener("click", () => {
-  equalsPressed = true;
-  isFirstNumber = true;
-  if (result >= 0) {
-    result = cutResult(Math.sqrt(result));
-    changeInput("√" + num1, num2, action);
-    num1 = result;
-    num2 = "";
-    action = "";
-    resultBlock.innerHTML = "=" + result;
-  } else {
-    num1 = "";
-    num2 = "";
-    action = "";
-    changeInput(num1, num2, action);
-    resultBlock.innerHTML = "=Error";
+  if (result != "Error") {
+    equalsPressed = true;
+    isFirstNumber = true;
+    if (result >= 0) {
+      result = cutResult(Math.sqrt(result));
+      changeInput("√" + num1, num2, action);
+      num1 = result;
+      num2 = "";
+      action = "";
+      resultBlock.innerHTML = "=" + result;
+    } else {
+      num1 = "";
+      num2 = "";
+      action = "";
+      changeInput(num1, num2, action);
+      resultBlock.innerHTML = "=Error";
+    }
   }
 });
 
 /* factorial */
 
 factorialBtn.addEventListener("click", () => {
-  equalsPressed = true;
-  isFirstNumber = true;
-  if (result == Math.trunc(result) && result >= 0) {
-    let n = result;
-    result = 1;
-    for (let i = 1; i <= n; ++i) {
-      result *= i;
-    }
-    if (num1 == "") {
-      changeInput(0 + "!", num2, action);
+  if (result != "Error") {
+    equalsPressed = true;
+    isFirstNumber = true;
+    if (result == Math.trunc(result) && result >= 0) {
+      let n = result;
+      result = 1;
+      for (let i = 1; i <= n; ++i) {
+        result *= i;
+      }
+      if (num1 == "") {
+        changeInput(0 + "!", num2, action);
+      } else {
+        changeInput(num1 + "!", num2, action);
+      }
+      num1 = result;
+      num2 = "";
+      resultBlock.innerHTML = "=" + result;
     } else {
-      changeInput(num1 + "!", num2, action);
+      num1 = "";
+      num2 = "";
+      action = "";
+      changeInput(num1, num2, action);
+      resultBlock.innerHTML = "=Error";
     }
-    num1 = result;
-    num2 = "";
-    resultBlock.innerHTML = "=" + result;
-  } else {
-    num1 = "";
-    num2 = "";
-    action = "";
-    changeInput(num1, num2, action);
-    resultBlock.innerHTML = "=Error";
   }
 });
 
 /* ln */
 
 lnBtn.addEventListener("click", () => {
-  equalsPressed = true;
-  isFirstNumber = true;
-  result = cutResult(Math.log2(result));
-  if (result == Infinity || result == -Infinity) {
-    num1 = "";
-    num2 = "";
-    action = "";
-    actionBlock.innerHTML = "";
-    resultBlock.innerHTML = "=Error";
-  } else {
-    num2 = "";
-    action = "";
-    changeInput("ln(" + num1 + ")", num2, action);
-    num1 = result;
-    resultBlock.innerHTML = "=" + result;
+  if (result != "Error") {
+    equalsPressed = true;
+    isFirstNumber = true;
+    result = cutResult(Math.log2(result));
+    if (result == Infinity || result == -Infinity) {
+      num1 = "";
+      num2 = "";
+      action = "";
+      actionBlock.innerHTML = "";
+      resultBlock.innerHTML = "=Error";
+    } else {
+      num2 = "";
+      action = "";
+      changeInput("ln(" + num1 + ")", num2, action);
+      num1 = result;
+      resultBlock.innerHTML = "=" + result;
+    }
   }
 });
 
