@@ -5,10 +5,13 @@ let result = "0";
 let isFirstNumber = true;
 let equalsPressed = false;
 
-const E = Math.E;
-const PI = Math.PI;
-const SQRT2 = Math.SQRT2;
-const SQRT3 = Math.sqrt(3);
+const MAX_RESULT_LENGTH = 15;
+const MAX_ACTION_LENGTH = 19;
+
+const E = cutResult(Math.E);
+const PI = cutResult(Math.PI);
+const SQRT2 = cutResult(Math.SQRT2);
+const SQRT3 = cutResult(Math.sqrt(3));
 
 const actionBlock = document.querySelector(".input");
 const resultBlock = document.querySelector(".result");
@@ -22,6 +25,14 @@ const plusMinusBtn = document.querySelector(".btn-plus-minus");
 const sqrtBtn = document.querySelector(".btn-sqrt");
 const factorialBtn = document.querySelector(".btn-factorial");
 const lnBtn = document.querySelector(".btn-ln");
+const eBtn = document.querySelector(".btn-e");
+const piBtn = document.querySelector(".btn-pi");
+const sqrt2Btn = document.querySelector(".btn-sqrt2");
+const sqrt3Btn = document.querySelector(".btn-sqrt3");
+
+function cutResult(result) {
+  return String(result).substring(0, MAX_RESULT_LENGTH);
+}
 
 function doAction(num1, num2, action) {
   if (num1 === "") {
@@ -53,19 +64,19 @@ for (let i = 1; i <= 10; ++i) {
       num1 = "";
       equalsPressed = false;
     }
-    if (isFirstNumber) {
+    if (isFirstNumber && num1.length < MAX_ACTION_LENGTH) {
       if (num1 == "0") {
         num1 = "";
       }
       num1 += i % 10;
-    } else {
+    } else if ((num1 + action + num2).length < MAX_ACTION_LENGTH) {
       if (num2 == "0") {
         num2 = "";
       }
       num2 += i % 10;
     }
     actionBlock.innerHTML = num1 + action + num2;
-    result = doAction(num1, num2, action);
+    result = cutResult(doAction(num1, num2, action));
     resultBlock.innerHTML = "=" + result;
   });
 }
@@ -219,5 +230,63 @@ lnBtn.addEventListener("click", () => {
     action = "";
     actionBlock.innerHTML = "";
     resultBlock.innerHTML = "=" + result;
+  }
+});
+
+/* Constant btns */
+
+eBtn.addEventListener("click", () => {
+  if (isFirstNumber) {
+    num1 = E;
+    result = num1;
+    actionBlock.innerHTML = num1;
+    resultBlock.innerHTML = "=" + cutResult(result);
+  } else {
+    num2 = E;
+    result = doAction(num1, num2, action);
+    actionBlock.innerHTML = num1 + action + num2;
+    resultBlock.innerHTML = "=" + cutResult(result);
+  }
+});
+
+piBtn.addEventListener("click", () => {
+  if (isFirstNumber) {
+    num1 = PI;
+    result = num1;
+    actionBlock.innerHTML = num1;
+    resultBlock.innerHTML = "=" + cutResult(result);
+  } else {
+    num2 = PI;
+    result = doAction(num1, num2, action);
+    actionBlock.innerHTML = num1 + action + num2;
+    resultBlock.innerHTML = "=" + cutResult(result);
+  }
+});
+
+sqrt2Btn.addEventListener("click", () => {
+  if (isFirstNumber) {
+    num1 = SQRT2;
+    result = num1;
+    actionBlock.innerHTML = num1;
+    resultBlock.innerHTML = "=" + cutResult(result);
+  } else {
+    num2 = SQRT2;
+    result = doAction(num1, num2, action);
+    actionBlock.innerHTML = num1 + action + num2;
+    resultBlock.innerHTML = "=" + cutResult(result);
+  }
+});
+
+sqrt3Btn.addEventListener("click", () => {
+  if (isFirstNumber) {
+    num1 = SQRT3;
+    result = num1;
+    actionBlock.innerHTML = num1;
+    resultBlock.innerHTML = "=" + cutResult(result);
+  } else {
+    num2 = SQRT3;
+    result = doAction(num1, num2, action);
+    actionBlock.innerHTML = num1 + action + num2;
+    resultBlock.innerHTML = "=" + cutResult(result);
   }
 });
