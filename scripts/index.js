@@ -5,15 +5,19 @@ let result = "0";
 let isFirstNumber = true;
 let equalsPressed = false;
 
-const MAX_RESULT_LENGTH = 15;
-const MAX_ACTION_LENGTH = 19;
+const MAX_RESULT_LENGTH = 14;
+const MAX_ACTION_LENGTH = 18;
+const MAX_NON_EXPONENT_NUM = 1.0e12;
+const MIN_NON_EXPONENT_NUM = 1.0e-12;
 
 const E = cutResult(Math.E);
 const PI = cutResult(Math.PI);
 const SQRT2 = cutResult(Math.SQRT2);
 const SQRT3 = cutResult(Math.sqrt(3));
 
-const actionBlock = document.querySelector(".input");
+const inputNum1Block = document.querySelector(".input-num1");
+const inputNum2Block = document.querySelector(".input-num2");
+const inputActionBlock = document.querySelector(".action");
 const resultBlock = document.querySelector(".result");
 const numbersBtnArray = document.querySelectorAll(".btn-number");
 const equalsBtn = document.querySelector(".btn-equals");
@@ -31,12 +35,18 @@ const sqrt2Btn = document.querySelector(".btn-sqrt2");
 const sqrt3Btn = document.querySelector(".btn-sqrt3");
 
 function cutResult(result) {
+  if (
+    result.length > MAX_RESULT_LENGTH &&
+    (result > MAX_NON_EXPONENT_NUM || result < MIN_NON_EXPONENT_NUM)
+  ) {
+    return Number(result).toExponential(3);
+  }
   return String(result).substring(0, MAX_RESULT_LENGTH);
 }
 
 function doAction(num1, num2, action) {
   if (num1 === "") {
-    return 0;
+    return "0";
   }
   if (num2 === "") {
     return num1;
@@ -57,6 +67,12 @@ function doAction(num1, num2, action) {
   }
 }
 
+function changeInput(num1, num2, action) {
+  inputNum1Block.innerHTML = num1;
+  inputActionBlock.innerHTML = action;
+  inputNum2Block.innerHTML = num2;
+}
+
 /* For numbers */
 for (let i = 1; i <= 10; ++i) {
   numbersBtnArray[i - 1].addEventListener("click", () => {
@@ -69,13 +85,13 @@ for (let i = 1; i <= 10; ++i) {
         num1 = "";
       }
       num1 += i % 10;
-    } else if ((num1 + action + num2).length < MAX_ACTION_LENGTH) {
+    } else if (num2.length < MAX_ACTION_LENGTH) {
       if (num2 == "0") {
         num2 = "";
       }
       num2 += i % 10;
     }
-    actionBlock.innerHTML = num1 + action + num2;
+    changeInput(num1, num2, action);
     result = cutResult(doAction(num1, num2, action));
     resultBlock.innerHTML = "=" + result;
   });
@@ -90,13 +106,12 @@ allDoubleActionBtn.forEach((btn) => {
       }
       action = btn.innerHTML;
       if (isFirstNumber) {
-        actionBlock.innerHTML = num1 + action;
         isFirstNumber = false;
       } else {
         num1 = result;
         num2 = "";
-        actionBlock.innerHTML = num1 + action;
       }
+      changeInput(num1, num2, action);
     }
   });
 });
@@ -114,17 +129,17 @@ pointBtn.addEventListener("click", () => {
     }
     num2 += ".";
   }
-  actionBlock.innerHTML = num1 + action + num2;
+  changeInput(num1, num2, action);
 });
 
 /* equals */
 equalsBtn.addEventListener("click", () => {
   equalsPressed = true;
-  actionBlock.innerHTML = "";
+  isFirstNumber = true;
   num1 = result;
   num2 = "";
   action = "";
-  isFirstNumber = true;
+  changeInput(num1, num2, action);
 });
 
 /* Clear */
@@ -133,8 +148,8 @@ allClearBtn.addEventListener("click", () => {
   num1 = "";
   num2 = "";
   action = "";
-  result = 0;
-  actionBlock.innerHTML = "";
+  result = "0";
+  changeInput(num1, num2, action);
   resultBlock.innerHTML = "=0";
 });
 
@@ -151,8 +166,8 @@ symbolClearBtn.addEventListener("click", () => {
       isFirstNumber = true;
     }
   }
-  actionBlock.innerHTML = num1 + action + num2;
-  result = doAction(num1, num2, action);
+  changeInput(num1, num2, action);
+  result = cutResult(doAction(num1, num2, action));
   resultBlock.innerHTML = "=" + result;
 });
 
@@ -164,7 +179,7 @@ plusMinusBtn.addEventListener("click", () => {
   num1 = result;
   num2 = "";
   action = "";
-  actionBlock.innerHTML = "";
+  changeInput(num1, num2, action);
   resultBlock.innerHTML = "=" + result;
 });
 
@@ -173,17 +188,17 @@ sqrtBtn.addEventListener("click", () => {
   equalsPressed = true;
   isFirstNumber = true;
   if (result >= 0) {
-    result = Math.sqrt(result);
+    result = cutResult(Math.sqrt(result));
+    changeInput("√" + num1, num2, action);
     num1 = result;
     num2 = "";
     action = "";
-    actionBlock.innerHTML = "";
     resultBlock.innerHTML = "=" + result;
   } else {
     num1 = "";
     num2 = "";
     action = "";
-    actionBlock.innerHTML = "";
+    changeInput(num1, num2, action);
     resultBlock.innerHTML = "=Error";
   }
 });
@@ -199,15 +214,19 @@ factorialBtn.addEventListener("click", () => {
     for (let i = 1; i <= n; ++i) {
       result *= i;
     }
+    if (num1 == "") {
+      changeInput(0 + "!", num2, action);
+    } else {
+      changeInput(num1 + "!", num2, action);
+    }
     num1 = result;
     num2 = "";
-    actionBlock.innerHTML = "";
     resultBlock.innerHTML = "=" + result;
   } else {
     num1 = "";
     num2 = "";
     action = "";
-    actionBlock.innerHTML = "";
+    changeInput(num1, num2, action);
     resultBlock.innerHTML = "=Error";
   }
 });
@@ -217,7 +236,7 @@ factorialBtn.addEventListener("click", () => {
 lnBtn.addEventListener("click", () => {
   equalsPressed = true;
   isFirstNumber = true;
-  result = Math.log2(result);
+  result = cutResult(Math.log2(result));
   if (result == Infinity || result == -Infinity) {
     num1 = "";
     num2 = "";
@@ -225,10 +244,10 @@ lnBtn.addEventListener("click", () => {
     actionBlock.innerHTML = "";
     resultBlock.innerHTML = "=Error";
   } else {
-    num1 = result;
     num2 = "";
     action = "";
-    actionBlock.innerHTML = "";
+    changeInput("ln(" + num1 + ")", num2, action);
+    num1 = result;
     resultBlock.innerHTML = "=" + result;
   }
 });
@@ -239,12 +258,12 @@ eBtn.addEventListener("click", () => {
   if (isFirstNumber) {
     num1 = E;
     result = num1;
-    actionBlock.innerHTML = num1;
+    changeInput(num1, num2, action);
     resultBlock.innerHTML = "=" + cutResult(result);
   } else {
     num2 = E;
-    result = doAction(num1, num2, action);
-    actionBlock.innerHTML = num1 + action + num2;
+    result = cutResult(doAction(num1, num2, action));
+    changeInput(num1, num2, action);
     resultBlock.innerHTML = "=" + cutResult(result);
   }
 });
@@ -253,12 +272,12 @@ piBtn.addEventListener("click", () => {
   if (isFirstNumber) {
     num1 = PI;
     result = num1;
-    actionBlock.innerHTML = num1;
+    changeInput(num1, num2, action);
     resultBlock.innerHTML = "=" + cutResult(result);
   } else {
     num2 = PI;
-    result = doAction(num1, num2, action);
-    actionBlock.innerHTML = num1 + action + num2;
+    result = cutResult(doAction(num1, num2, action));
+    changeInput(num1, num2, action);
     resultBlock.innerHTML = "=" + cutResult(result);
   }
 });
@@ -267,12 +286,12 @@ sqrt2Btn.addEventListener("click", () => {
   if (isFirstNumber) {
     num1 = SQRT2;
     result = num1;
-    actionBlock.innerHTML = num1;
+    changeInput(num1, num2, action);
     resultBlock.innerHTML = "=" + cutResult(result);
   } else {
     num2 = SQRT2;
-    result = doAction(num1, num2, action);
-    actionBlock.innerHTML = num1 + action + num2;
+    result = cutResult(doAction(num1, num2, action));
+    changeInput(num1, num2, action);
     resultBlock.innerHTML = "=" + cutResult(result);
   }
 });
@@ -281,12 +300,12 @@ sqrt3Btn.addEventListener("click", () => {
   if (isFirstNumber) {
     num1 = SQRT3;
     result = num1;
-    actionBlock.innerHTML = num1;
+    changeInput(num1, num2, action);
     resultBlock.innerHTML = "=" + cutResult(result);
   } else {
     num2 = SQRT3;
-    result = doAction(num1, num2, action);
-    actionBlock.innerHTML = num1 + action + num2;
+    result = cutResult(doAction(num1, num2, action));
+    changeInput(num1, num2, action);
     resultBlock.innerHTML = "=" + cutResult(result);
   }
 });

@@ -46,9 +46,15 @@ main {
   justify-content: end;
 }
 
-.actions-wrapper .input {
-  background-color: #3d3d3d;
+.input {
+  display: flex;
+  justify-content: end;
+  flex-wrap: wrap;
 
+  background-color: #3d3d3d;
+}
+
+.input * {
   color: #f3f3f3;
   font-size: 36px;
   line-height: 48px;
