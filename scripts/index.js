@@ -109,7 +109,9 @@ allDoubleActionBtn.forEach((btn) => {
         if (equalsPressed) {
           equalsPressed = false;
         }
-        if (action == "") {
+        if (action != "" && btn.innerHTML == "-" && num2 == "") {
+          num2 += "-";
+        } else {
           action = btn.innerHTML;
           if (isFirstNumber) {
             isFirstNumber = false;
@@ -117,10 +119,8 @@ allDoubleActionBtn.forEach((btn) => {
             num1 = result;
             num2 = "";
           }
-        } else if (num2 == "") {
-          num2 += "-";
         }
-      } else {
+      } else if (action == "" && isFirstNumber && btn.innerHTML == "-") {
         equalsPressed = false;
         num1 += "-";
       }
@@ -132,6 +132,7 @@ allDoubleActionBtn.forEach((btn) => {
 /* point */
 pointBtn.addEventListener("click", () => {
   if (isFirstNumber && !num1.includes(".")) {
+    equalsPressed = false;
     if (num1.length == 0) {
       num1 += "0";
     }
@@ -210,7 +211,11 @@ sqrtBtn.addEventListener("click", () => {
     isFirstNumber = true;
     if (result >= 0) {
       result = cutResult(Math.sqrt(result));
-      changeInput("√" + num1, num2, action);
+      if (num1 == "") {
+        changeInput("√" + 0, num2, action);
+      } else {
+        changeInput("√" + num1, num2, action);
+      }
       num1 = result;
       num2 = "";
       action = "";
@@ -219,6 +224,7 @@ sqrtBtn.addEventListener("click", () => {
       num1 = "";
       num2 = "";
       action = "";
+      result = "Error";
       changeInput(num1, num2, action);
       resultBlock.innerHTML = "=Error";
     }
@@ -264,6 +270,7 @@ factorialBtn.addEventListener("click", () => {
       num1 = "";
       num2 = "";
       action = "";
+      result = "Error";
       changeInput(num1, num2, action);
       resultBlock.innerHTML = "=Error";
     }
@@ -281,7 +288,8 @@ lnBtn.addEventListener("click", () => {
       num1 = "";
       num2 = "";
       action = "";
-      actionBlock.innerHTML = "";
+      result = "Error";
+      changeInput(num1, num2, action);
       resultBlock.innerHTML = "=Error";
     } else {
       num2 = "";
