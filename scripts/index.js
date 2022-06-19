@@ -6,7 +6,7 @@ let isFirstNumber = true;
 let equalsPressed = false;
 
 const MAX_RESULT_LENGTH = 14;
-const MAX_ACTION_LENGTH = 18;
+const MAX_ACTION_NUM_LENGTH = 18;
 const MAX_NON_EXPONENT_NUM = 1.0e12;
 const MIN_NON_EXPONENT_NUM = 1.0e-12;
 
@@ -84,12 +84,14 @@ for (let i = 1; i <= 10; ++i) {
       num1 = "";
       equalsPressed = false;
     }
-    if (isFirstNumber && num1.length < MAX_ACTION_LENGTH) {
-      if (num1 == "0") {
-        num1 = "";
+    if (isFirstNumber) {
+      if (num1.length < MAX_ACTION_NUM_LENGTH) {
+        if (num1 == "0") {
+          num1 = "";
+        }
+        num1 += i % 10;
       }
-      num1 += i % 10;
-    } else if (num2.length < MAX_ACTION_LENGTH) {
+    } else if (num2.length < MAX_ACTION_NUM_LENGTH) {
       if (num2 == "0") {
         num2 = "";
       }
@@ -175,11 +177,11 @@ allClearBtn.addEventListener("click", () => {
 symbolClearBtn.addEventListener("click", () => {
   if (isFirstNumber) {
     if (num1.length != 0) {
-      num1 = num1.substring(0, num1.length - 1);
+      num1 = String(num1).substring(0, String(num1).length - 1);
     }
   } else {
     if (num2.length != 0) {
-      num2 = num2.substring(0, num2.length - 1);
+      num2 = String(num2).substring(0, String(num2).length - 1);
     } else {
       action = "";
       isFirstNumber = true;
