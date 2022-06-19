@@ -284,7 +284,7 @@ lnBtn.addEventListener("click", () => {
     equalsPressed = true;
     isFirstNumber = true;
     result = cutResult(Math.log2(result));
-    if (result == Infinity || result == -Infinity) {
+    if (result == Infinity || result == -Infinity || isNaN(result)) {
       num1 = "";
       num2 = "";
       action = "";
@@ -356,5 +356,113 @@ sqrt3Btn.addEventListener("click", () => {
     result = cutResult(doAction(num1, num2, action));
     changeInput(num1, num2, action);
     resultBlock.innerHTML = "=" + cutResult(result);
+  }
+});
+
+/* keyboard */
+
+document.addEventListener("keydown", (event) => {
+  let key = event.key;
+
+  switch (key) {
+    case "0":
+      numbersBtnArray[9].click();
+      break;
+    case "1":
+      if (event.shiftKey) {
+        numbersBtnArray[0].click();
+      }
+      break;
+    case "2":
+      if (!event.shiftKey) {
+        numbersBtnArray[1].click();
+      }
+      break;
+    case "3":
+      if (!event.shiftKey) {
+        numbersBtnArray[2].click();
+      }
+      break;
+    case "4":
+      numbersBtnArray[3].click();
+      break;
+    case "5":
+      if (!event.shiftKey) {
+        numbersBtnArray[4].click();
+      }
+      break;
+    case "6":
+      numbersBtnArray[5].click();
+      break;
+    case "7":
+      numbersBtnArray[6].click();
+      break;
+    case "8":
+      numbersBtnArray[7].click();
+      break;
+    case "9":
+      numbersBtnArray[8].click();
+      break;
+
+    case "%":
+      if (event.shiftKey) {
+        allDoubleActionBtn[0].click();
+      }
+      break;
+    case "/":
+      allDoubleActionBtn[1].click();
+      break;
+    case "*":
+      allDoubleActionBtn[2].click();
+      break;
+    case "-":
+      allDoubleActionBtn[3].click();
+      break;
+    case "+":
+      allDoubleActionBtn[4].click();
+      break;
+
+    case ".":
+      pointBtn.click();
+      break;
+    case "=":
+      equalsBtn.click();
+      break;
+    case "Enter":
+      equalsBtn.click();
+      break;
+    case "!":
+      if (event.shiftKey) {
+        factorialBtn.click();
+      }
+      break;
+    case "Backspace":
+      symbolClearBtn.click();
+      break;
+    case "Delete":
+      allClearBtn.click();
+      break;
+    case "e":
+      eBtn.click();
+      break;
+    case "p":
+      piBtn.click();
+      break;
+    case "l":
+      lnBtn.click();
+      break;
+    case "@": //sqrt2 shift + 2
+      if (event.shiftKey) {
+        sqrt2Btn.click();
+      }
+      break;
+    case "#": //sqrt3 shift + 3
+      if (event.shiftKey) {
+        sqrt3Btn.click();
+      }
+      break;
+    case "\\":
+      plusMinusBtn.click();
+      break;
   }
 });
