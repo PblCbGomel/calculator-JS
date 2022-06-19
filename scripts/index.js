@@ -5,11 +5,10 @@ let result = "0";
 let isFirstNumber = true;
 let equalsPressed = false;
 
-const MAX_RESULT_LENGTH = 14;
-const MAX_ACTION_NUM_LENGTH = 14;
+const MAX_RESULT_LENGTH = 15;
+const MAX_ACTION_NUM_LENGTH = 15;
 const MAX_NON_EXPONENT_NUM = 1.0e12;
 const MIN_NON_EXPONENT_NUM = 1.0e-12;
-const ACCURACY = 1e6;
 
 const E = cutResult(Math.E);
 const PI = cutResult(Math.PI);
@@ -43,7 +42,10 @@ function cutResult(result) {
   ) {
     return Number(result).toExponential(3);
   }
-  return String(Math.floor(result * ACCURACY) / ACCURACY).substring(
+  if (result == "Error") {
+    return "Error";
+  }
+  return String(parseFloat(Number(result).toPrecision(13))).substring(
     0,
     MAX_RESULT_LENGTH
   );
@@ -56,6 +58,7 @@ function doAction(num1, num2, action) {
   if (num2 === "") {
     return num1;
   }
+
   switch (action) {
     case "+":
       return String(Number(num1) + Number(num2));
@@ -117,7 +120,7 @@ allDoubleActionBtn.forEach((btn) => {
         }
         if (action != "" && btn.innerHTML == "-" && num2 == "") {
           num2 += "-";
-        } else {
+        } else if (num1 != "-") {
           action = btn.innerHTML;
           if (isFirstNumber) {
             isFirstNumber = false;
