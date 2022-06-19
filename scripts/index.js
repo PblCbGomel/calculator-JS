@@ -36,8 +36,9 @@ const sqrt3Btn = document.querySelector(".btn-sqrt3");
 
 function cutResult(result) {
   if (
-    result.length > MAX_RESULT_LENGTH &&
-    (result > MAX_NON_EXPONENT_NUM || result < MIN_NON_EXPONENT_NUM)
+    String(result).length > MAX_RESULT_LENGTH &&
+    (Math.abs(result) > MAX_NON_EXPONENT_NUM ||
+      Math.abs(result) < MIN_NON_EXPONENT_NUM)
   ) {
     return Number(result).toExponential(3);
   }
@@ -103,18 +104,20 @@ for (let i = 1; i <= 10; ++i) {
 /*For double action*/
 allDoubleActionBtn.forEach((btn) => {
   btn.addEventListener("click", () => {
-    if (num1 !== "") {
-      if (equalsPressed) {
-        equalsPressed = false;
+    if (result != "Error") {
+      if (num1 !== "") {
+        if (equalsPressed) {
+          equalsPressed = false;
+        }
+        action = btn.innerHTML;
+        if (isFirstNumber) {
+          isFirstNumber = false;
+        } else {
+          num1 = result;
+          num2 = "";
+        }
+        changeInput(num1, num2, action);
       }
-      action = btn.innerHTML;
-      if (isFirstNumber) {
-        isFirstNumber = false;
-      } else {
-        num1 = result;
-        num2 = "";
-      }
-      changeInput(num1, num2, action);
     }
   });
 });
@@ -217,23 +220,38 @@ sqrtBtn.addEventListener("click", () => {
 
 /* factorial */
 
+function getFactorial(n) {
+  let result = 1;
+  for (let i = 2; i <= n; ++i) {
+    result *= i;
+  }
+  return result;
+}
+
 factorialBtn.addEventListener("click", () => {
   if (result != "Error") {
     equalsPressed = true;
     isFirstNumber = true;
+
     if (result == Math.trunc(result) && result >= 0) {
-      let n = result;
-      result = 1;
-      for (let i = 1; i <= n; ++i) {
-        result *= i;
-      }
+      num2 = "";
+      action = "";
       if (num1 == "") {
         changeInput(0 + "!", num2, action);
-      } else {
+      } else if (num1 == result) {
         changeInput(num1 + "!", num2, action);
+      } else {
+        changeInput(result + "!", num2, action);
       }
+
+      if (result > 170) {
+        result = Infinity;
+      } else {
+        result = getFactorial(result);
+      }
+
+      result = cutResult(result);
       num1 = result;
-      num2 = "";
       resultBlock.innerHTML = "=" + result;
     } else {
       num1 = "";
