@@ -42,7 +42,10 @@ function cutResult(result) {
   ) {
     return Number(result).toExponential(4);
   }
-  return String((result * 1e12) / 1e12).substring(0, MAX_RESULT_LENGTH);
+  return String(Math.round(result * 1e12) / 1e12).substring(
+    0,
+    MAX_RESULT_LENGTH
+  );
 }
 
 function doAction(num1, num2, action) {
