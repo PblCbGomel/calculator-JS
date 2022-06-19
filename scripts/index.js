@@ -178,10 +178,16 @@ symbolClearBtn.addEventListener("click", () => {
   if (isFirstNumber) {
     if (num1.length != 0) {
       num1 = String(num1).substring(0, String(num1).length - 1);
+      if (num1 == "-") {
+        num1 = "";
+      }
     }
   } else {
     if (num2.length != 0) {
       num2 = String(num2).substring(0, String(num2).length - 1);
+      if (num2 == "-") {
+        num2 = "";
+      }
     } else {
       action = "";
       isFirstNumber = true;
