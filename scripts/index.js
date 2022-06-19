@@ -109,15 +109,22 @@ allDoubleActionBtn.forEach((btn) => {
         if (equalsPressed) {
           equalsPressed = false;
         }
-        action = btn.innerHTML;
-        if (isFirstNumber) {
-          isFirstNumber = false;
-        } else {
-          num1 = result;
-          num2 = "";
+        if (action == "") {
+          action = btn.innerHTML;
+          if (isFirstNumber) {
+            isFirstNumber = false;
+          } else {
+            num1 = result;
+            num2 = "";
+          }
+        } else if (num2 == "") {
+          num2 += "-";
         }
-        changeInput(num1, num2, action);
+      } else {
+        equalsPressed = false;
+        num1 += "-";
       }
+      changeInput(num1, num2, action);
     }
   });
 });
