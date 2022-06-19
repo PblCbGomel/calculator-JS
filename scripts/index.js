@@ -6,7 +6,7 @@ let isFirstNumber = true;
 let equalsPressed = false;
 
 const MAX_RESULT_LENGTH = 14;
-const MAX_ACTION_NUM_LENGTH = 18;
+const MAX_ACTION_NUM_LENGTH = 14;
 const MAX_NON_EXPONENT_NUM = 1.0e12;
 const MIN_NON_EXPONENT_NUM = 1.0e-12;
 
@@ -40,9 +40,9 @@ function cutResult(result) {
     (Math.abs(result) > MAX_NON_EXPONENT_NUM ||
       Math.abs(result) < MIN_NON_EXPONENT_NUM)
   ) {
-    return Number(result).toExponential(3);
+    return Number(result).toExponential(4);
   }
-  return String(result).substring(0, MAX_RESULT_LENGTH);
+  return String((result * 1e12) / 1e12).substring(0, MAX_RESULT_LENGTH);
 }
 
 function doAction(num1, num2, action) {
