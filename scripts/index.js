@@ -9,6 +9,7 @@ const MAX_RESULT_LENGTH = 14;
 const MAX_ACTION_NUM_LENGTH = 14;
 const MAX_NON_EXPONENT_NUM = 1.0e12;
 const MIN_NON_EXPONENT_NUM = 1.0e-12;
+const ACCURACY = 1e5;
 
 const E = cutResult(Math.E);
 const PI = cutResult(Math.PI);
@@ -40,9 +41,9 @@ function cutResult(result) {
     (Math.abs(result) > MAX_NON_EXPONENT_NUM ||
       Math.abs(result) < MIN_NON_EXPONENT_NUM)
   ) {
-    return Number(result).toExponential(4);
+    return Number(result).toExponential(3);
   }
-  return String(Math.round(result * 1e12) / 1e12).substring(
+  return String(Math.round(result * ACCURACY) / ACCURACY).substring(
     0,
     MAX_RESULT_LENGTH
   );
