@@ -369,7 +369,7 @@ document.addEventListener("keydown", (event) => {
       numbersBtnArray[9].click();
       break;
     case "1":
-      if (event.shiftKey) {
+      if (!event.shiftKey) {
         numbersBtnArray[0].click();
       }
       break;
