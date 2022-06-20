@@ -37,18 +37,14 @@ const sqrt3Btn = document.querySelector(".btn-sqrt3");
 function cutResult(result) {
   if (
     String(result).length > MAX_RESULT_LENGTH &&
-    (Math.abs(result) > MAX_NON_EXPONENT_NUM ||
-      Math.abs(result) < MIN_NON_EXPONENT_NUM)
+    (Math.abs(result) > MAX_NON_EXPONENT_NUM || Math.abs(result) < MIN_NON_EXPONENT_NUM)
   ) {
     return Number(result).toExponential(3);
   }
   if (result == "Error") {
     return "Error";
   }
-  return String(parseFloat(Number(result).toPrecision(13))).substring(
-    0,
-    MAX_RESULT_LENGTH
-  );
+  return String(parseFloat(Number(result).toPrecision(13))).substring(0, MAX_RESULT_LENGTH);
 }
 
 function doAction(num1, num2, action) {
@@ -72,6 +68,9 @@ function doAction(num1, num2, action) {
       }
       return String(num1 / num2);
     case "%":
+      if (Math.abs(num1 / num2) == Infinity) {
+        return "Error";
+      }
       return String(num1 % num2);
     default:
       return num1;
@@ -142,7 +141,7 @@ allDoubleActionBtn.forEach((btn) => {
 pointBtn.addEventListener("click", () => {
   if (isFirstNumber && !num1.includes(".")) {
     equalsPressed = false;
-    if (num1.length == 0) {
+    if (num1.length == 0 || num1 == "-") {
       num1 += "0";
     }
     num1 += ".";
