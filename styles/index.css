@@ -16,25 +16,35 @@ main {
   width: 100%;
   height: 1000px;
 
-  background-color: rgb(216, 216, 216);
+  background-color: rgb(164, 164, 164);
 }
 
-.calculator-wrapper {
-  background-color: #232323;
+.calculator-wrapper-dark,
+.calculator-wrapper-ligth {
   width: 450px;
   height: 750px;
   border-radius: 15px;
-  border: 1px solid black;
 
   display: flex;
   flex-direction: column;
 
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+
+  transition: 0.3s;
 }
 
-.actions-wrapper {
-  background-color: #3d3d3d;
+.calculator-wrapper-dark {
+  background-color: #232323;
+  border: 1px solid #232323;
+}
 
+.calculator-wrapper-ligth {
+  background-color: #dad9d9;
+  border: 1px solid #dad9d9;
+}
+
+.actions-wrapper-dark,
+.actions-wrapper-ligth {
   height: 200px;
   width: calc(100%-20px);
   padding: 0 20px 10px;
@@ -44,30 +54,62 @@ main {
   flex-direction: column;
   align-items: flex-end;
   justify-content: end;
+
+  transition: 0.3s;
 }
 
-.input {
+.actions-wrapper-dark {
+  background-color: #3d3d3d;
+}
+
+.actions-wrapper-ligth {
+  background-color: #ecebeb;
+}
+
+.input-dark,
+.input-ligth {
   display: flex;
   justify-content: end;
   flex-wrap: wrap;
 
-  background-color: #3d3d3d;
+  transition: 0.3s;
 }
 
-.input * {
+.input-dark * {
   color: #f3f3f3;
   font-size: 36px;
   line-height: 48px;
   max-width: 420px;
 }
 
-.actions-wrapper .result {
-  color: #ffffff;
+.input-ligth * {
+  color: #1b1b1b;
+}
+
+.input-ligth *,
+.input-dark * {
+  font-size: 36px;
+  line-height: 48px;
+  max-width: 420px;
+}
+
+.actions-wrapper-dark .result,
+.actions-wrapper-ligth .result {
   font-size: 44px;
   line-height: 60px;
   max-width: 420px;
 
   text-align: right;
+
+  transition: 0.3s;
+}
+
+.actions-wrapper-dark .result {
+  color: #ffffff;
+}
+
+.actions-wrapper-ligth .result {
+  color: #1b1b1b;
 }
 
 .buttons-wrapper {
@@ -83,16 +125,25 @@ main {
   user-select: none;
 }
 
-.btn {
+.btn-dark {
+  box-shadow: 0 4px 4px rgba(255, 255, 255, 0.25);
+}
+
+.btn-ligth {
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.btn-dark,
+.btn-ligth {
   width: 85px;
   height: 50px;
   border-radius: 10px;
-  box-shadow: 0 4px 4px rgba(255, 255, 255, 0.25);
-  border: 1px solid black;
 
   text-align: center;
   line-height: 50px;
   font-size: 32px;
+
+  transition: 0.3s;
 }
 
 .btn:hover {
@@ -139,12 +190,32 @@ main {
   background-color: #bdbdbd;
 }
 
-.by-text {
-  width: 100%;
+.themes-block {
+  width: 130px;
+  margin: auto;
+  margin-bottom: 20px;
 
-  text-align: center;
-  font-size: 16px;
-  color: white;
-  letter-spacing: 1px;
-  font-family: sans-serif;
+  display: flex;
+  justify-content: space-between;
+}
+
+.dark-theme,
+.ligth-theme {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+}
+
+.dark-theme {
+  border: 1px solid #d9d9d9;
+  background-color: #232323;
+
+  cursor: pointer;
+}
+
+.ligth-theme {
+  border: 1px solid #232323;
+  background-color: #d9d9d9;
+
+  cursor: pointer;
 }
