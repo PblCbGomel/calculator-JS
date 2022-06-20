@@ -14,15 +14,15 @@ main {
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 1200px;
+  height: 100vh;
 
   background-color: rgb(164, 164, 164);
 }
 
 .calculator-wrapper-dark,
 .calculator-wrapper-ligth {
-  width: 450px;
-  height: 750px;
+  width: 400px;
+  height: 650px;
   border-radius: 15px;
 
   display: flex;
@@ -85,14 +85,13 @@ main {
 
 .input-ligth *,
 .input-dark * {
-  font-size: 36px;
   line-height: 48px;
   max-width: 420px;
 }
 
 .actions-wrapper-dark .result,
 .actions-wrapper-ligth .result {
-  line-height: 60px;
+  line-height: 50px;
   max-width: 420px;
 
   text-align: right;
@@ -101,11 +100,11 @@ main {
 }
 
 .main-text {
-  font-size: 44px;
+  font-size: 40px;
 }
 
 .secondary-text {
-  font-size: 36px;
+  font-size: 32px;
 }
 
 .actions-wrapper-dark .result {
@@ -139,12 +138,12 @@ main {
 
 .btn-dark,
 .btn-ligth {
-  width: 85px;
-  height: 50px;
+  width: 74px;
+  height: 45px;
   border-radius: 10px;
 
   text-align: center;
-  line-height: 50px;
+  line-height: 45px;
   font-size: 32px;
 
   transition: 0.3s;
@@ -155,7 +154,7 @@ main {
 }
 
 .btn-clear-all {
-  width: 190px;
+  width: 166px;
 }
 
 .btn-orange {
