@@ -7,8 +7,8 @@ let equalsPressed = true;
 
 const MAX_RESULT_LENGTH = 13;
 const MAX_ACTION_NUM_LENGTH = 13;
-const MAX_NON_EXPONENT_NUM = 1.0e12;
-const MIN_NON_EXPONENT_NUM = 1.0e-12;
+const MAX_NON_EXPONENT_NUM = 1.0e13;
+const MIN_NON_EXPONENT_NUM = 1.0e-13;
 
 const E = resultProcessing(Math.E);
 const PI = resultProcessing(Math.PI);
@@ -43,7 +43,7 @@ function errorHandling() {
 
 function resultProcessing(result) {
   if (
-    String(result).length > MAX_RESULT_LENGTH &&
+    result.length > MAX_RESULT_LENGTH &&
     (Math.abs(result) > MAX_NON_EXPONENT_NUM || Math.abs(result) < MIN_NON_EXPONENT_NUM)
   ) {
     return Number(result).toExponential(3);
@@ -51,7 +51,9 @@ function resultProcessing(result) {
   if (result == "Error") {
     return "Error";
   }
-  return String(parseFloat(Number(result).toPrecision(MAX_RESULT_LENGTH)));
+  return String(
+    parseFloat(Number(Number(result).toFixed(MAX_RESULT_LENGTH)).toPrecision(MAX_RESULT_LENGTH))
+  );
 }
 
 function doAction(num1, num2, action) {

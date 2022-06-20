@@ -77,8 +77,6 @@ main {
 
 .input-dark * {
   color: #f3f3f3;
-  line-height: 48px;
-  max-width: 420px;
 }
 
 .input-ligth * {
