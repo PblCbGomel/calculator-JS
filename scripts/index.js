@@ -43,8 +43,8 @@ function errorHandling() {
 
 function resultProcessing(result) {
   if (
-    result.length > MAX_RESULT_LENGTH &&
-    (Math.abs(result) > MAX_NON_EXPONENT_NUM || Math.abs(result) < MIN_NON_EXPONENT_NUM)
+    (Math.abs(result) > MAX_NON_EXPONENT_NUM || Math.abs(result) < MIN_NON_EXPONENT_NUM) &&
+    result != 0
   ) {
     return Number(result).toExponential(3);
   }
