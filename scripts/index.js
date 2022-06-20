@@ -3,7 +3,7 @@ let num2 = "";
 let action = "";
 let result = "0";
 let isFirstNumber = true;
-let equalsPressed = false;
+let equalsPressed = true;
 
 const MAX_RESULT_LENGTH = 13;
 const MAX_ACTION_NUM_LENGTH = 13;
@@ -51,14 +51,14 @@ function resultProcessing(result) {
   if (result == "Error") {
     return "Error";
   }
-  return String(parseFloat(Number(String(result)).toPrecision(MAX_RESULT_LENGTH)));
+  return String(parseFloat(Number(result).toPrecision(MAX_RESULT_LENGTH)));
 }
 
 function doAction(num1, num2, action) {
-  if (num1 === "") {
+  if (num1 == "") {
     return "0";
   }
-  if (num2 === "") {
+  if (num2 == "") {
     return num1;
   }
 
@@ -149,7 +149,7 @@ for (let i = 1; i <= 10; ++i) {
 allDoubleActionBtn.forEach((btn) => {
   btn.addEventListener("click", () => {
     if (result != "Error") {
-      if (num1 !== "") {
+      if (num1 != "") {
         if (equalsPressed) {
           equalsPressed = false;
         }
