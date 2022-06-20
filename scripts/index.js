@@ -5,8 +5,8 @@ let result = "0";
 let isFirstNumber = true;
 let equalsPressed = false;
 
-const MAX_RESULT_LENGTH = 15;
-const MAX_ACTION_NUM_LENGTH = 15;
+const MAX_RESULT_LENGTH = 13;
+const MAX_ACTION_NUM_LENGTH = 13;
 const MAX_NON_EXPONENT_NUM = 1.0e12;
 const MIN_NON_EXPONENT_NUM = 1.0e-12;
 
@@ -44,7 +44,7 @@ function cutResult(result) {
   if (result == "Error") {
     return "Error";
   }
-  return String(parseFloat(Number(result).toPrecision(13))).substring(0, MAX_RESULT_LENGTH);
+  return String(parseFloat(Number(String(result)).toPrecision(MAX_RESULT_LENGTH)));
 }
 
 function doAction(num1, num2, action) {
@@ -83,6 +83,34 @@ function changeInput(num1, num2, action) {
   inputNum2Block.innerHTML = num2;
 }
 
+function changeFontSizeInInput() {
+  if (equalsPressed) {
+    inputNum1Block.classList.add("secondary-text");
+    inputNum1Block.classList.remove("main-text");
+
+    inputNum2Block.classList.add("secondary-text");
+    inputNum2Block.classList.remove("main-text");
+
+    inputActionBlock.classList.add("secondary-text");
+    inputActionBlock.classList.remove("main-text");
+
+    resultBlock.classList.add("main-text");
+    resultBlock.classList.remove("secondary-text");
+  } else {
+    inputNum1Block.classList.remove("secondary-text");
+    inputNum1Block.classList.add("main-text");
+
+    inputNum2Block.classList.remove("secondary-text");
+    inputNum2Block.classList.add("main-text");
+
+    inputActionBlock.classList.remove("secondary-text");
+    inputActionBlock.classList.add("main-text");
+
+    resultBlock.classList.remove("main-text");
+    resultBlock.classList.add("secondary-text");
+  }
+}
+
 /* For numbers */
 for (let i = 1; i <= 10; ++i) {
   numbersBtnArray[i - 1].addEventListener("click", () => {
@@ -103,6 +131,7 @@ for (let i = 1; i <= 10; ++i) {
       }
       num2 += i % 10;
     }
+    changeFontSizeInInput();
     changeInput(num1, num2, action);
     result = cutResult(doAction(num1, num2, action));
     resultBlock.innerHTML = "=" + result;
@@ -117,6 +146,7 @@ allDoubleActionBtn.forEach((btn) => {
         if (equalsPressed) {
           equalsPressed = false;
         }
+        changeFontSizeInInput();
         if (action != "" && btn.innerHTML == "-" && num2 == "") {
           num2 += "-";
         } else if (num1 != "-") {
@@ -159,6 +189,7 @@ pointBtn.addEventListener("click", () => {
 /* equals */
 equalsBtn.addEventListener("click", () => {
   equalsPressed = true;
+  changeFontSizeInInput();
   isFirstNumber = true;
   num1 = result;
   num2 = "";
@@ -171,6 +202,8 @@ equalsBtn.addEventListener("click", () => {
 
 /* Clear */
 allClearBtn.addEventListener("click", () => {
+  equalsPressed = true;
+  changeFontSizeInInput();
   isFirstNumber = true;
   num1 = "";
   num2 = "";

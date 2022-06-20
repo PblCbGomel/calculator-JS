@@ -20,12 +20,12 @@ darkBtn.addEventListener("click", () => {
 });
 
 ligthBtn.addEventListener("click", () => {
-  calculatorWrapper.classList.add("calculator-wrapper-ligth");
   calculatorWrapper.classList.remove("calculator-wrapper-dark");
-  actionWrapper.classList.add("actions-wrapper-ligth");
+  calculatorWrapper.classList.add("calculator-wrapper-ligth");
   actionWrapper.classList.remove("actions-wrapper-dark");
-  inputWrapper.classList.add("input-ligth");
+  actionWrapper.classList.add("actions-wrapper-ligth");
   inputWrapper.classList.remove("input-dark");
+  inputWrapper.classList.add("input-ligth");
 
   btnsArray.forEach((btn) => {
     btn.classList.remove("btn-dark");

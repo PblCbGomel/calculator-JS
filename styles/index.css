@@ -77,7 +77,6 @@ main {
 
 .input-dark * {
   color: #f3f3f3;
-  font-size: 36px;
   line-height: 48px;
   max-width: 420px;
 }
@@ -95,13 +94,20 @@ main {
 
 .actions-wrapper-dark .result,
 .actions-wrapper-ligth .result {
-  font-size: 44px;
   line-height: 60px;
   max-width: 420px;
 
   text-align: right;
 
   transition: 0.3s;
+}
+
+.main-text {
+  font-size: 44px;
+}
+
+.secondary-text {
+  font-size: 36px;
 }
 
 .actions-wrapper-dark .result {
@@ -260,6 +266,14 @@ main {
   .actions-wrapper-ligth .result {
     font-size: 28px;
     line-height: 48px;
+  }
+
+  .main-text {
+    font-size: 28px;
+  }
+
+  .secondary-text {
+    font-size: 20px;
   }
 
   .themes-block {
