@@ -224,10 +224,6 @@ main {
 }
 
 @media (max-width: 768px) {
-  main {
-    height: 1000px;
-  }
-
   .calculator-wrapper-dark,
   .calculator-wrapper-ligth {
     height: 600px;
