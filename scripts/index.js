@@ -10,10 +10,10 @@ const MAX_ACTION_NUM_LENGTH = 13;
 const MAX_NON_EXPONENT_NUM = 1.0e12;
 const MIN_NON_EXPONENT_NUM = 1.0e-12;
 
-const E = cutResult(Math.E);
-const PI = cutResult(Math.PI);
-const SQRT2 = cutResult(Math.SQRT2);
-const SQRT3 = cutResult(Math.sqrt(3));
+const E = resultProcessing(Math.E);
+const PI = resultProcessing(Math.PI);
+const SQRT2 = resultProcessing(Math.SQRT2);
+const SQRT3 = resultProcessing(Math.sqrt(3));
 
 const inputNum1Block = document.querySelector(".input-num1");
 const inputNum2Block = document.querySelector(".input-num2");
@@ -34,7 +34,14 @@ const piBtn = document.querySelector(".btn-pi");
 const sqrt2Btn = document.querySelector(".btn-sqrt2");
 const sqrt3Btn = document.querySelector(".btn-sqrt3");
 
-function cutResult(result) {
+function errorHandling() {
+  num1 = "";
+  num2 = "";
+  action = "";
+  result = "Error";
+}
+
+function resultProcessing(result) {
   if (
     String(result).length > MAX_RESULT_LENGTH &&
     (Math.abs(result) > MAX_NON_EXPONENT_NUM || Math.abs(result) < MIN_NON_EXPONENT_NUM)
@@ -77,10 +84,11 @@ function doAction(num1, num2, action) {
   }
 }
 
-function changeInput(num1, num2, action) {
+function changeInput(num1, num2, action, result) {
   inputNum1Block.innerHTML = num1;
   inputActionBlock.innerHTML = action;
   inputNum2Block.innerHTML = num2;
+  resultBlock.innerHTML = "=" + result;
 }
 
 function changeFontSizeInInput() {
@@ -132,9 +140,8 @@ for (let i = 1; i <= 10; ++i) {
       num2 += i % 10;
     }
     changeFontSizeInInput();
-    changeInput(num1, num2, action);
-    result = cutResult(doAction(num1, num2, action));
-    resultBlock.innerHTML = "=" + result;
+    result = resultProcessing(doAction(num1, num2, action));
+    changeInput(num1, num2, action, result);
   });
 }
 
@@ -162,7 +169,7 @@ allDoubleActionBtn.forEach((btn) => {
         equalsPressed = false;
         num1 += "-";
       }
-      changeInput(num1, num2, action);
+      changeInput(num1, num2, action, result);
     }
   });
 });
@@ -181,9 +188,8 @@ pointBtn.addEventListener("click", () => {
     }
     num2 += ".";
   }
-  result = cutResult(doAction(num1, num2, action));
-  resultBlock.innerHTML = "=" + result;
-  changeInput(num1, num2, action);
+  result = resultProcessing(doAction(num1, num2, action));
+  changeInput(num1, num2, action, result);
 });
 
 /* equals */
@@ -191,13 +197,14 @@ equalsBtn.addEventListener("click", () => {
   equalsPressed = true;
   changeFontSizeInInput();
   isFirstNumber = true;
-  num1 = result;
-  num2 = "";
-  action = "";
-  changeInput("", num2, action);
   if (result == "Error") {
     num1 = "";
+  } else {
+    num1 = result;
   }
+  num2 = "";
+  action = "";
+  changeInput("", num2, action, result);
 });
 
 /* Clear */
@@ -209,8 +216,7 @@ allClearBtn.addEventListener("click", () => {
   num2 = "";
   action = "";
   result = "0";
-  changeInput(num1, num2, action);
-  resultBlock.innerHTML = "=0";
+  changeInput(num1, num2, action, result);
 });
 
 symbolClearBtn.addEventListener("click", () => {
@@ -232,9 +238,12 @@ symbolClearBtn.addEventListener("click", () => {
       isFirstNumber = true;
     }
   }
-  changeInput(num1, num2, action);
-  result = cutResult(doAction(num1, num2, action));
-  resultBlock.innerHTML = "=" + result;
+  if (num1 == "" && num2 == "" && action == "") {
+    equalsPressed = true;
+    changeFontSizeInInput();
+  }
+  result = resultProcessing(doAction(num1, num2, action));
+  changeInput(num1, num2, action, result);
 });
 
 /* +/- */
@@ -246,8 +255,7 @@ plusMinusBtn.addEventListener("click", () => {
     num1 = result;
     num2 = "";
     action = "";
-    changeInput(num1, num2, action);
-    resultBlock.innerHTML = "=" + result;
+    changeInput(num1, num2, action, result);
   }
 });
 
@@ -255,25 +263,23 @@ plusMinusBtn.addEventListener("click", () => {
 sqrtBtn.addEventListener("click", () => {
   if (result != "Error") {
     equalsPressed = true;
+    changeFontSizeInInput();
     isFirstNumber = true;
+
     if (result >= 0) {
-      result = cutResult(Math.sqrt(result));
+      result = resultProcessing(Math.sqrt(result));
       if (num1 == "") {
-        changeInput("√" + 0, num2, action);
+        changeInput("√" + 0, num2, action, result);
       } else {
-        changeInput("√" + num1, num2, action);
+        changeInput("√" + num1, num2, action, result);
       }
       num1 = result;
       num2 = "";
       action = "";
       resultBlock.innerHTML = "=" + result;
     } else {
-      num1 = "";
-      num2 = "";
-      action = "";
-      result = "Error";
-      changeInput(num1, num2, action);
-      resultBlock.innerHTML = "=Error";
+      errorHandling();
+      changeInput(num1, num2, action, result);
     }
   }
 });
@@ -281,45 +287,41 @@ sqrtBtn.addEventListener("click", () => {
 /* factorial */
 
 function getFactorial(n) {
+  if (n > 170) {
+    return Infinity;
+  }
   let result = 1;
   for (let i = 2; i <= n; ++i) {
     result *= i;
   }
-  return result;
+  return resultProcessing(result);
 }
 
 factorialBtn.addEventListener("click", () => {
   if (result != "Error") {
     equalsPressed = true;
+    changeFontSizeInInput();
     isFirstNumber = true;
 
     if (result == Math.trunc(result) && result >= 0) {
-      num2 = "";
-      action = "";
+      result = getFactorial(result);
+
       if (num1 == "") {
-        changeInput(0 + "!", num2, action);
-      } else if (num1 == result) {
-        changeInput(num1 + "!", num2, action);
+        changeInput(0 + "!", num2, action, result);
+      } else if (num2 == "") {
+        action = "";
+        changeInput(num1 + "!", num2, "", result);
       } else {
-        changeInput(result + "!", num2, action);
+        changeInput(doAction(num1, num2, action) + "!", "", "", result);
       }
-
-      if (result > 170) {
-        result = Infinity;
-      } else {
-        result = getFactorial(result);
-      }
-
-      result = cutResult(result);
-      num1 = result;
-      resultBlock.innerHTML = "=" + result;
-    } else {
-      num1 = "";
       num2 = "";
       action = "";
+
+      num1 = result;
+    } else {
+      errorHandling();
       result = "Error";
-      changeInput(num1, num2, action);
-      resultBlock.innerHTML = "=Error";
+      changeInput(num1, num2, action, result);
     }
   }
 });
@@ -329,21 +331,18 @@ factorialBtn.addEventListener("click", () => {
 lnBtn.addEventListener("click", () => {
   if (result != "Error") {
     equalsPressed = true;
+    changeFontSizeInInput();
     isFirstNumber = true;
-    result = cutResult(Math.log2(result));
+
+    result = resultProcessing(Math.log2(result));
     if (result == Infinity || result == -Infinity || isNaN(result)) {
-      num1 = "";
-      num2 = "";
-      action = "";
-      result = "Error";
-      changeInput(num1, num2, action);
-      resultBlock.innerHTML = "=Error";
+      errorHandling();
+      changeInput(num1, num2, action, result);
     } else {
       num2 = "";
       action = "";
-      changeInput("ln(" + num1 + ")", num2, action);
+      changeInput("ln(" + num1 + ")", num2, action, result);
       num1 = result;
-      resultBlock.innerHTML = "=" + result;
     }
   }
 });
@@ -354,13 +353,11 @@ eBtn.addEventListener("click", () => {
   if (isFirstNumber) {
     num1 = E;
     result = num1;
-    changeInput(num1, num2, action);
-    resultBlock.innerHTML = "=" + cutResult(result);
+    changeInput(num1, num2, action, result);
   } else {
     num2 = E;
-    result = cutResult(doAction(num1, num2, action));
-    changeInput(num1, num2, action);
-    resultBlock.innerHTML = "=" + cutResult(result);
+    result = resultProcessing(doAction(num1, num2, action));
+    changeInput(num1, num2, action, result);
   }
 });
 
@@ -368,13 +365,11 @@ piBtn.addEventListener("click", () => {
   if (isFirstNumber) {
     num1 = PI;
     result = num1;
-    changeInput(num1, num2, action);
-    resultBlock.innerHTML = "=" + cutResult(result);
+    changeInput(num1, num2, action, result);
   } else {
     num2 = PI;
-    result = cutResult(doAction(num1, num2, action));
-    changeInput(num1, num2, action);
-    resultBlock.innerHTML = "=" + cutResult(result);
+    result = resultProcessing(doAction(num1, num2, action));
+    changeInput(num1, num2, action, result);
   }
 });
 
@@ -382,13 +377,11 @@ sqrt2Btn.addEventListener("click", () => {
   if (isFirstNumber) {
     num1 = SQRT2;
     result = num1;
-    changeInput(num1, num2, action);
-    resultBlock.innerHTML = "=" + cutResult(result);
+    changeInput(num1, num2, action, result);
   } else {
     num2 = SQRT2;
-    result = cutResult(doAction(num1, num2, action));
-    changeInput(num1, num2, action);
-    resultBlock.innerHTML = "=" + cutResult(result);
+    result = resultProcessing(doAction(num1, num2, action));
+    changeInput(num1, num2, action, result);
   }
 });
 
@@ -396,13 +389,11 @@ sqrt3Btn.addEventListener("click", () => {
   if (isFirstNumber) {
     num1 = SQRT3;
     result = num1;
-    changeInput(num1, num2, action);
-    resultBlock.innerHTML = "=" + cutResult(result);
+    changeInput(num1, num2, action, result);
   } else {
     num2 = SQRT3;
-    result = cutResult(doAction(num1, num2, action));
-    changeInput(num1, num2, action);
-    resultBlock.innerHTML = "=" + cutResult(result);
+    result = resultProcessing(doAction(num1, num2, action));
+    changeInput(num1, num2, action, result);
   }
 });
 
@@ -450,52 +441,50 @@ document.addEventListener("keydown", (event) => {
     case "9":
       numbersBtnArray[8].click();
       break;
-
-    case "%":
+    case "%": // remainder of div btn
       if (event.shiftKey) {
         allDoubleActionBtn[0].click();
       }
       break;
-    case "/":
+    case "/": // div btn
       allDoubleActionBtn[1].click();
       break;
-    case "*":
+    case "*": // mult btn
       allDoubleActionBtn[2].click();
       break;
-    case "-":
+    case "-": // minus btn
       allDoubleActionBtn[3].click();
       break;
-    case "+":
+    case "+": // plus btn
       allDoubleActionBtn[4].click();
       break;
-
-    case ".":
+    case ".": // point btn
       pointBtn.click();
       break;
-    case "=":
+    case "=": // equals first btn
       equalsBtn.click();
       break;
-    case "Enter":
+    case "Enter": // equals second btn
       equalsBtn.click();
       break;
-    case "!":
+    case "!": // factorial shift + 1 btn
       if (event.shiftKey) {
         factorialBtn.click();
       }
       break;
-    case "Backspace":
+    case "Backspace": // clear 1 symbol btn
       symbolClearBtn.click();
       break;
-    case "Delete":
+    case "Delete": // clear all btn
       allClearBtn.click();
       break;
-    case "e":
+    case "e": // e btn
       eBtn.click();
       break;
-    case "p":
+    case "p": // pi btn
       piBtn.click();
       break;
-    case "l":
+    case "l": // ln btn
       lnBtn.click();
       break;
     case "@": //sqrt2 shift + 2
@@ -508,7 +497,7 @@ document.addEventListener("keydown", (event) => {
         sqrt3Btn.click();
       }
       break;
-    case "\\":
+    case "\\": // +- btn
       plusMinusBtn.click();
       break;
   }

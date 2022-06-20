@@ -257,15 +257,13 @@ main {
 
   .input-ligth *,
   .input-dark * {
-    font-size: 20px;
     line-height: 40px;
     max-width: 280px;
   }
 
   .actions-wrapper-dark .result,
   .actions-wrapper-ligth .result {
-    font-size: 28px;
-    line-height: 48px;
+    line-height: 40px;
   }
 
   .main-text {
