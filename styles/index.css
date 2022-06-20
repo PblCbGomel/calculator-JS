@@ -9,6 +9,10 @@
   color: black;
 }
 
+::-webkit-scrollbar {
+  width: 0;
+}
+
 main {
   display: flex;
   align-items: center;
