@@ -227,16 +227,17 @@ main {
   cursor: pointer;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px), (max-height: 720px) {
   .calculator-wrapper-dark,
   .calculator-wrapper-ligth {
-    height: 600px;
+    height: 580px;
     width: 320px;
   }
 
   .actions-wrapper-dark,
   .actions-wrapper-ligth {
-    height: 180px;
+    height: 170px;
+    padding: 0 15px 5px;
   }
 
   .btn-dark,
@@ -264,14 +265,15 @@ main {
   }
 
   .main-text {
-    font-size: 28px;
+    font-size: 32px;
   }
 
   .secondary-text {
-    font-size: 20px;
+    font-size: 24px;
   }
 
   .themes-block {
     width: 100px;
+    margin-bottom: 15px;
   }
 }
