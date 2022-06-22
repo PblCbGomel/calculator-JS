@@ -58,6 +58,10 @@ function resultProcessing(result) {
   );
 }
 
+function checkDivisionByZero(num1, num2) {
+  return Math.abs(num1 / num2) === Infinity || String(Math.abs(num1 / num2)) === "NaN";
+}
+
 function doAction(num1, num2, action) {
   if (num1 === "") {
     return "0";
@@ -74,12 +78,12 @@ function doAction(num1, num2, action) {
     case "x":
       return String(num1 * num2);
     case "/":
-      if (Math.abs(num1 / num2) === Infinity) {
+      if (checkDivisionByZero(num1, num2)) {
         return "Error";
       }
       return String(num1 / num2);
     case "%":
-      if (Math.abs(num1 / num2) === Infinity) {
+      if (checkDivisionByZero(num1, num2)) {
         return "Error";
       }
       return String(num1 % num2);
