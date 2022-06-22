@@ -224,6 +224,12 @@ allClearBtn.addEventListener("click", () => {
 });
 
 symbolClearBtn.addEventListener("click", () => {
+  if (result === "Infinity" || result === "-Infinity") {
+    result = "";
+    num1 = "";
+    num2 = "";
+    action = "";
+  }
   if (isFirstNumber && num1.length !== 0) {
     num1 = String(num1).substring(0, String(num1).length - 1);
   } else if (num2.length !== 0) {
@@ -297,7 +303,7 @@ sqrtBtn.addEventListener("click", () => {
 
 function getFactorial(n) {
   if (n > 170) {
-    return Infinity;
+    return "Infinity";
   }
   let result = 1;
   for (let i = 2; i <= n; ++i) {
@@ -328,9 +334,9 @@ factorialBtn.addEventListener("click", () => {
     result = getFactorial(result);
 
     factorialChangeInput();
+
     num2 = "";
     action = "";
-
     num1 = result;
   } else {
     errorHandling();
