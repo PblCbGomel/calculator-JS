@@ -355,7 +355,7 @@ lnBtn.addEventListener("click", () => {
   changeFontSizeInInput();
   isFirstNumber = true;
 
-  result = resultProcessing(Math.log2(result));
+  result = resultProcessing(Math.log(result));
   if (result === Infinity || result === -Infinity || isNaN(result)) {
     errorHandling();
     changeInput(num1, num2, action, result);
