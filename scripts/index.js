@@ -139,7 +139,7 @@ for (let i = 1; i <= COUNT_NUMBER_BTN; ++i) {
         num1 = "";
       }
       num1 += i % 10;
-    } else if (num2.length < MAX_ACTION_NUM_LENGTH) {
+    } else if (!isFirstNumber && num2.length < MAX_ACTION_NUM_LENGTH) {
       if (num2 === "0") {
         num2 = "";
       }
