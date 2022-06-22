@@ -5,6 +5,8 @@ let result = "0";
 let isFirstNumber = true;
 let equalsPressed = true;
 
+const COUNT_NUMBER_BTN = 10;
+
 const MAX_RESULT_LENGTH = 13;
 const MAX_ACTION_NUM_LENGTH = 13;
 const MAX_NON_EXPONENT_NUM = 1.0e13;
@@ -44,11 +46,11 @@ function errorHandling() {
 function resultProcessing(result) {
   if (
     (Math.abs(result) > MAX_NON_EXPONENT_NUM || Math.abs(result) < MIN_NON_EXPONENT_NUM) &&
-    result != 0
+    Number(result) !== 0
   ) {
-    return Number(result).toExponential(3);
+    return String(Number(result).toExponential(3));
   }
-  if (result == "Error") {
+  if (result === "Error") {
     return "Error";
   }
   return String(
@@ -57,10 +59,10 @@ function resultProcessing(result) {
 }
 
 function doAction(num1, num2, action) {
-  if (num1 == "") {
+  if (num1 === "") {
     return "0";
   }
-  if (num2 == "") {
+  if (num2 === "") {
     return num1;
   }
 
@@ -72,12 +74,12 @@ function doAction(num1, num2, action) {
     case "x":
       return String(num1 * num2);
     case "/":
-      if (Math.abs(num1 / num2) == Infinity) {
+      if (Math.abs(num1 / num2) === Infinity) {
         return "Error";
       }
       return String(num1 / num2);
     case "%":
-      if (Math.abs(num1 / num2) == Infinity) {
+      if (Math.abs(num1 / num2) === Infinity) {
         return "Error";
       }
       return String(num1 % num2);
@@ -122,25 +124,24 @@ function changeFontSizeInInput() {
 }
 
 /* For numbers */
-for (let i = 1; i <= 10; ++i) {
+for (let i = 1; i <= COUNT_NUMBER_BTN; ++i) {
   numbersBtnArray[i - 1].addEventListener("click", () => {
-    if (equalsPressed == true) {
+    if (equalsPressed === true) {
       num1 = "";
       equalsPressed = false;
     }
-    if (isFirstNumber) {
-      if (num1.length < MAX_ACTION_NUM_LENGTH) {
-        if (num1 == "0") {
-          num1 = "";
-        }
-        num1 += i % 10;
+    if (isFirstNumber && num1.length < MAX_ACTION_NUM_LENGTH) {
+      if (num1 === "0") {
+        num1 = "";
       }
+      num1 += i % 10;
     } else if (num2.length < MAX_ACTION_NUM_LENGTH) {
-      if (num2 == "0") {
+      if (num2 === "0") {
         num2 = "";
       }
       num2 += i % 10;
     }
+
     changeFontSizeInInput();
     result = resultProcessing(doAction(num1, num2, action));
     changeInput(num1, num2, action, result);
@@ -150,29 +151,31 @@ for (let i = 1; i <= 10; ++i) {
 /*For double action*/
 allDoubleActionBtn.forEach((btn) => {
   btn.addEventListener("click", () => {
-    if (result != "Error") {
-      if (num1 != "") {
-        if (equalsPressed) {
-          equalsPressed = false;
-        }
-        changeFontSizeInInput();
-        if (action != "" && btn.innerHTML == "-" && num2 == "") {
-          num2 += "-";
-        } else if (num1 != "-") {
-          action = btn.innerHTML;
-          if (isFirstNumber) {
-            isFirstNumber = false;
-          } else {
-            num1 = result;
-            num2 = "";
-          }
-        }
-      } else if (action == "" && isFirstNumber && btn.innerHTML == "-") {
-        equalsPressed = false;
-        num1 += "-";
-      }
-      changeInput(num1, num2, action, result);
+    if (result === "Error") {
+      return;
     }
+
+    if (num1 !== "") {
+      if (equalsPressed) {
+        equalsPressed = false;
+      }
+      if (action !== "" && btn.innerHTML === "-" && num2 === "") {
+        num2 += "-";
+      } else if (num1 !== "-") {
+        action = btn.innerHTML;
+        if (isFirstNumber) {
+          isFirstNumber = false;
+        } else {
+          num1 = result;
+          num2 = "";
+        }
+      }
+    } else if (action === "" && isFirstNumber && btn.innerHTML === "-") {
+      equalsPressed = false;
+      num1 += "-";
+    }
+    changeFontSizeInInput();
+    changeInput(num1, num2, action, result);
   });
 });
 
@@ -180,14 +183,13 @@ allDoubleActionBtn.forEach((btn) => {
 pointBtn.addEventListener("click", () => {
   if (isFirstNumber && !num1.includes(".")) {
     equalsPressed = false;
-    if (num1.length == 0 || num1 == "-") {
+    if (num1.length === 0 || num1 === "-") {
       num1 += "0";
     }
     num1 += ".";
+  } else if (!num2.includes(".") || num2.length === 0) {
+    num2 += "0.";
   } else if (!num2.includes(".")) {
-    if (num2.length == 0) {
-      num2 += "0";
-    }
     num2 += ".";
   }
   result = resultProcessing(doAction(num1, num2, action));
@@ -199,7 +201,7 @@ equalsBtn.addEventListener("click", () => {
   equalsPressed = true;
   changeFontSizeInInput();
   isFirstNumber = true;
-  if (result == "Error") {
+  if (result === "Error") {
     num1 = "";
   } else {
     num1 = result;
@@ -222,25 +224,22 @@ allClearBtn.addEventListener("click", () => {
 });
 
 symbolClearBtn.addEventListener("click", () => {
-  if (isFirstNumber) {
-    if (num1.length != 0) {
-      num1 = String(num1).substring(0, String(num1).length - 1);
-      if (num1 == "-") {
-        num1 = "";
-      }
-    }
+  if (isFirstNumber && num1.length !== 0) {
+    num1 = String(num1).substring(0, String(num1).length - 1);
+  } else if (num2.length !== 0) {
+    num2 = String(num2).substring(0, String(num2).length - 1);
   } else {
-    if (num2.length != 0) {
-      num2 = String(num2).substring(0, String(num2).length - 1);
-      if (num2 == "-") {
-        num2 = "";
-      }
-    } else {
-      action = "";
-      isFirstNumber = true;
-    }
+    action = "";
+    isFirstNumber = true;
   }
-  if (num1 == "" && num2 == "" && action == "") {
+
+  if (num1 === "-") {
+    num1 = "";
+  }
+  if (num2 === "-") {
+    num2 = "";
+  }
+  if (num1 === "" && num2 === "" && action === "") {
     equalsPressed = true;
     changeFontSizeInInput();
   }
@@ -250,39 +249,47 @@ symbolClearBtn.addEventListener("click", () => {
 
 /* +/- */
 plusMinusBtn.addEventListener("click", () => {
-  if (result != "Error") {
-    equalsPressed = true;
-    isFirstNumber = true;
-    result = -result;
-    num1 = result;
-    num2 = "";
-    action = "";
-    changeInput(num1, num2, action, result);
+  if (result === "Error") {
+    return;
   }
+  equalsPressed = true;
+  isFirstNumber = true;
+  result = -result;
+  num1 = result;
+  num2 = "";
+  action = "";
+  changeInput(num1, num2, action, result);
 });
 
 /* sqrt */
-sqrtBtn.addEventListener("click", () => {
-  if (result != "Error") {
-    equalsPressed = true;
-    changeFontSizeInInput();
-    isFirstNumber = true;
+function sqrtChangeInput() {
+  if (num1 === "") {
+    changeInput("√" + 0, num2, action, result);
+  } else {
+    changeInput("√" + num1, num2, action, result);
+  }
+}
 
-    if (result >= 0) {
-      result = resultProcessing(Math.sqrt(result));
-      if (num1 == "") {
-        changeInput("√" + 0, num2, action, result);
-      } else {
-        changeInput("√" + num1, num2, action, result);
-      }
-      num1 = result;
-      num2 = "";
-      action = "";
-      resultBlock.innerHTML = "=" + result;
-    } else {
-      errorHandling();
-      changeInput(num1, num2, action, result);
-    }
+sqrtBtn.addEventListener("click", () => {
+  if (result === "Error") {
+    return;
+  }
+
+  equalsPressed = true;
+  changeFontSizeInInput();
+  isFirstNumber = true;
+
+  if (result >= 0) {
+    result = resultProcessing(Math.sqrt(result));
+
+    sqrtChangeInput();
+    num1 = result;
+    num2 = "";
+    action = "";
+    resultBlock.innerHTML = "=" + result;
+  } else {
+    errorHandling();
+    changeInput(num1, num2, action, result);
   }
 });
 
@@ -299,53 +306,58 @@ function getFactorial(n) {
   return resultProcessing(result);
 }
 
+function factorialChangeInput() {
+  if (num1 === "") {
+    changeInput(0 + "!", num2, action, result);
+  } else if (num2 === "") {
+    changeInput(num1 + "!", num2, "", result);
+  } else {
+    changeInput(doAction(num1, num2, action) + "!", "", "", result);
+  }
+}
+
 factorialBtn.addEventListener("click", () => {
-  if (result != "Error") {
-    equalsPressed = true;
-    changeFontSizeInInput();
-    isFirstNumber = true;
+  if (result === "Error") {
+    return;
+  }
+  equalsPressed = true;
+  changeFontSizeInInput();
+  isFirstNumber = true;
 
-    if (result == Math.trunc(result) && result >= 0) {
-      result = getFactorial(result);
+  if (result === String(Math.trunc(result)) && result >= 0) {
+    result = getFactorial(result);
 
-      if (num1 == "") {
-        changeInput(0 + "!", num2, action, result);
-      } else if (num2 == "") {
-        action = "";
-        changeInput(num1 + "!", num2, "", result);
-      } else {
-        changeInput(doAction(num1, num2, action) + "!", "", "", result);
-      }
-      num2 = "";
-      action = "";
+    factorialChangeInput();
+    num2 = "";
+    action = "";
 
-      num1 = result;
-    } else {
-      errorHandling();
-      result = "Error";
-      changeInput(num1, num2, action, result);
-    }
+    num1 = result;
+  } else {
+    errorHandling();
+    result = "Error";
+    changeInput(num1, num2, action, result);
   }
 });
 
 /* ln */
 
 lnBtn.addEventListener("click", () => {
-  if (result != "Error") {
-    equalsPressed = true;
-    changeFontSizeInInput();
-    isFirstNumber = true;
+  if (result === "Error") {
+    return;
+  }
+  equalsPressed = true;
+  changeFontSizeInInput();
+  isFirstNumber = true;
 
-    result = resultProcessing(Math.log2(result));
-    if (result == Infinity || result == -Infinity || isNaN(result)) {
-      errorHandling();
-      changeInput(num1, num2, action, result);
-    } else {
-      num2 = "";
-      action = "";
-      changeInput("ln(" + num1 + ")", num2, action, result);
-      num1 = result;
-    }
+  result = resultProcessing(Math.log2(result));
+  if (result === Infinity || result === -Infinity || isNaN(result)) {
+    errorHandling();
+    changeInput(num1, num2, action, result);
+  } else {
+    num2 = "";
+    action = "";
+    changeInput("ln(" + num1 + ")", num2, action, result);
+    num1 = result;
   }
 });
 
