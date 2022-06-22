@@ -187,8 +187,8 @@ pointBtn.addEventListener("click", () => {
       num1 += "0";
     }
     num1 += ".";
-  } else if (!num2.includes(".") || num2.length === 0) {
-    num2 += "0.";
+  } else if (!num2.includes(".") && num2.length === 0) {
+    num2 = "0.";
   } else if (!num2.includes(".")) {
     num2 += ".";
   }
