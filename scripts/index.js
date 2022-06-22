@@ -155,20 +155,18 @@ allDoubleActionBtn.forEach((btn) => {
       return;
     }
 
-    if (num1 !== "") {
-      if (equalsPressed) {
-        equalsPressed = false;
-      }
-      if (action !== "" && btn.innerHTML === "-" && num2 === "") {
-        num2 += "-";
-      } else if (num1 !== "-") {
-        action = btn.innerHTML;
-        if (isFirstNumber) {
-          isFirstNumber = false;
-        } else {
-          num1 = result;
-          num2 = "";
-        }
+    if (equalsPressed) {
+      equalsPressed = false;
+    }
+    if (action !== "" && btn.innerHTML === "-" && num2 === "") {
+      num2 += "-";
+    } else if (num1 !== "-" && num1 !== "") {
+      action = btn.innerHTML;
+      if (isFirstNumber) {
+        isFirstNumber = false;
+      } else {
+        num1 = result;
+        num2 = "";
       }
     } else if (action === "" && isFirstNumber && btn.innerHTML === "-") {
       equalsPressed = false;
@@ -519,6 +517,9 @@ document.addEventListener("keydown", (event) => {
       break;
     case "\\": // +- btn
       plusMinusBtn.click();
+      break;
+    case "s": // sqrt btn
+      sqrtBtn.click();
       break;
   }
 });
