@@ -159,9 +159,6 @@ allDoubleActionBtn.forEach((btn) => {
       return;
     }
 
-    if (equalsPressed) {
-      equalsPressed = false;
-    }
     if (action !== "" && btn.innerHTML === "-" && num2 === "") {
       num2 += "-";
     } else if (num1 !== "-" && num1 !== "") {
@@ -176,6 +173,9 @@ allDoubleActionBtn.forEach((btn) => {
       equalsPressed = false;
       num1 += "-";
     }
+    if (equalsPressed && num1 !== "") {
+      equalsPressed = false;
+    }
     changeFontSizeInInput();
     changeInput(num1, num2, action, result);
   });
@@ -189,9 +189,9 @@ pointBtn.addEventListener("click", () => {
       num1 += "0";
     }
     num1 += ".";
-  } else if (!num2.includes(".") && num2.length === 0) {
+  } else if (!isFirstNumber && !num2.includes(".") && num2.length === 0) {
     num2 = "0.";
-  } else if (!num2.includes(".")) {
+  } else if (!isFirstNumber && !num2.includes(".")) {
     num2 += ".";
   }
   result = resultProcessing(doAction(num1, num2, action));
