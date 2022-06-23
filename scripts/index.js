@@ -169,7 +169,7 @@ allDoubleActionBtn.forEach((btn) => {
         num1 = result;
         num2 = "";
       }
-    } else if (action === "" && isFirstNumber && btn.innerHTML === "-") {
+    } else if (action === "" && isFirstNumber && btn.innerHTML === "-" && num1 !== "-") {
       equalsPressed = false;
       num1 += "-";
     }
