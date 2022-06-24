@@ -132,16 +132,15 @@ main {
   user-select: none;
 }
 
-.btn-dark {
+.wrapper-dark .btn {
   box-shadow: 0 4px 4px rgba(255, 255, 255, 0.25);
 }
 
-.btn-ligth {
+.wrapper-ligth .btn {
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-.btn-dark,
-.btn-ligth {
+.btn {
   width: 74px;
   height: 45px;
   border-radius: 10px;
@@ -240,8 +239,7 @@ main {
     padding: 0 15px 5px;
   }
 
-  .btn-dark,
-  .btn-ligth {
+  .btn {
     width: 60px;
     height: 40px;
 

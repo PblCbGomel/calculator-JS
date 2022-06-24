@@ -3,7 +3,7 @@ const darkBtn = document.querySelector(".dark-theme");
 const calculatorWrapper = document.querySelector(".calculator-wrapper");
 const actionWrapper = document.querySelector(".actions-wrapper");
 const inputWrapper = document.querySelector(".input");
-const btnsArray = document.querySelectorAll(".btn");
+const btnsWrapper = document.querySelector(".buttons-wrapper");
 
 darkBtn.addEventListener("click", () => {
   calculatorWrapper.classList.remove("calculator-wrapper-ligth");
@@ -12,11 +12,8 @@ darkBtn.addEventListener("click", () => {
   actionWrapper.classList.add("actions-wrapper-dark");
   inputWrapper.classList.remove("input-ligth");
   inputWrapper.classList.add("input-dark");
-
-  btnsArray.forEach((btn) => {
-    btn.classList.remove("btn-ligth");
-    btn.classList.add("btn-dark");
-  });
+  btnsWrapper.classList.remove("wrapper-ligth");
+  btnsWrapper.classList.add("wrapper-dark");
 });
 
 ligthBtn.addEventListener("click", () => {
@@ -26,9 +23,6 @@ ligthBtn.addEventListener("click", () => {
   actionWrapper.classList.add("actions-wrapper-ligth");
   inputWrapper.classList.remove("input-dark");
   inputWrapper.classList.add("input-ligth");
-
-  btnsArray.forEach((btn) => {
-    btn.classList.remove("btn-dark");
-    btn.classList.add("btn-ligth");
-  });
+  btnsWrapper.classList.remove("wrapper-dark");
+  btnsWrapper.classList.add("wrapper-ligth");
 });
